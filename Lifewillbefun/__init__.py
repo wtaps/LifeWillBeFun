@@ -1,4 +1,5 @@
 from flask import Flask
-app = Flask(__name__)
+app = Flask('Lifewillbefun')
+app.config.from_pyfile('app_config.cfg')
 
-import Lifewillbefun.views
+from Lifewillbefun.views import regist
