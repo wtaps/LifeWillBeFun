@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-import smtplib, sys
+import smtplib, sys, os
 from email.header import Header
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -11,7 +11,7 @@ def sendMail(mailto):
     #me = user + '<' + user + '@' + postfix + '>'
     me = app.config['MAIL_USER']
     msg = MIMEMultipart('alternative')
-    html = open('/root/python/case/LifeWillBeFun/Lifewillbefun/utils/regist_mail.tpl').read()
+    html = open(os.path.join(os.getcwd(), 'Lifewillbefun/utils/regist_mail.tpl')).read()
     html_part = MIMEText(html, 'html')
     msg.attach(html_part)
     #msg = MIMEText(u"注册", _subtype='html', _charset='gbk') 
