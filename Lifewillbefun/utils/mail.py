@@ -6,15 +6,16 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from Lifewillbefun import app
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 def sendMail(mailto):
     #me = user + '<' + user + '@' + postfix + '>'
     me = app.config['MAIL_USER']
     msg = MIMEMultipart('alternative')
-    html = open(os.path.join(os.getcwd(), 'Lifewillbefun/utils/regist_mail.tpl')).read()
+    html = open(os.path.join(BASE_DIR, 'regist_mail.tpl')).read()
     html_part = MIMEText(html, 'html')
     msg.attach(html_part)
-    #msg = MIMEText(u"注册", _subtype='html', _charset='gbk') 
     msg['Subject'] = u"Welcome to regist"
     msg['From'] = me 
     msg['To'] = ''.join(mailto) 
