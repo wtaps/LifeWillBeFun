@@ -1,33 +1,31 @@
 # -*- coding: utf8 -*-
 
-import smtplib, sys, os
-from email.header import Header
+import smtplib, os, re
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from Lifewillbefun.app_config import MAIL_HOST, MAIL_USER, MAIL_PASS, MAIL_PORT
 from Lifewillbefun import app
 
 BASE_DIR = os.path.dirname(__file__)
 
-
-def sendMail(mailto):
-    #me = user + '<' + user + '@' + postfix + '>'
-    me = app.config['MAIL_USER']
+def sendMail(mailto, code):
+    me = MAIL_USER + '<' + MAIL_USER + '@' + MAIL_USER.split('@')[1] + '>'
     msg = MIMEMultipart('alternative')
-    html = open(os.path.join(BASE_DIR, 'regist_mail.tpl')).read()
+    url = 'http://192.168.10.250:8000/active?' + 'email=' + mailto + '&' + 'code=' + code
+    html = open(os.path.join(BASE_DIR, 'regist_mail.tpl')).read().format(url)
     html_part = MIMEText(html, 'html')
     msg.attach(html_part)
-    msg['Subject'] = u"Welcome to regist"
+    msg['Subject'] = u"欢迎注册lifewillbefun"
     msg['From'] = me 
     msg['To'] = ''.join(mailto) 
-
     try:
-        s = smtplib.SMTP(app.config['MAIL_HOST'])
-        s.login(app.config['MAIL_USER'], app.config['MAIL_PASS'])
+        s = smtplib.SMTP(MAIL_HOST)
+        s.login(MAIL_USER, MAIL_PASS)
         s.sendmail(me, mailto, msg.as_string())
         s.quit()
-    except:
-        print 'mail fault'
+    except Exception, e:
+        print str(e)
 
 if __name__ == '__main__':
-    sendMail(mailto)
+    sendMail(mailto, code)
 
