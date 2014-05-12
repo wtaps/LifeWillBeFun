@@ -14,7 +14,7 @@ class User(db.Model):
 
     def __init__(self, username, email):
         self.username = username
-        self.password = password
+        self.email = email
 #        self.code = code
 
     def __repr__(self):
@@ -34,5 +34,5 @@ class Userinfo(db.Model):
 
     def __repr__(self):
         return '<Userinfo %r>' % self.phone
-#db.create_all()
+db.create_all()
 

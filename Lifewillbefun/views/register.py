@@ -7,7 +7,7 @@ from Lifewillbefun.models.user import User, User_regist
 
 @app.route('/', methods=['GET', 'POST'])
 def regist():
-     return redirect(url_for('register'))
+     return render_template('regist.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -23,7 +23,7 @@ def register():
             return render_template('password.html', email = email)
         else:
             flash(u'此邮箱已经注册')
-    return render_template('regist.html') 
+    return redirect(url_for('regist')) 
 
 @app.route('/active')
 def active():
@@ -57,8 +57,4 @@ def init_password():
     else:
         return render_template('password.html')
     return render_template('password.html')
-
-
-
-
 

@@ -8,4 +8,4 @@ app.jinja_env.globals.update(static = '/static')
 app.jinja_env.globals.update(get_user_id = get_user_id)
 db = SQLAlchemy(app)
 
-from Lifewillbefun.views import register, login, note
+from Lifewillbefun.views import register, login, blog

@@ -25,7 +25,7 @@ def note_write():
 
 @app.route('/latest', methods=['GET', 'POST'])
 def note_latest():
-    entities = Note.query.order_by(Note.time.desc()).limit(3).all()
+    entities = Note.query.filter_by().order_by('-id').all()
     return str(entities)
 
 
