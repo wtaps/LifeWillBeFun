@@ -5,7 +5,7 @@ from flask import Flask, url_for, request, render_template, flash, make_response
 from Lifewillbefun.utils import mail, util
 from Lifewillbefun.models.user import User, User_regist
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def regist():
      return render_template('regist.html')
 
@@ -13,17 +13,19 @@ def regist():
 def register():
     if request.method == 'POST':
         email = request.form['email'].strip()
+        email_is_valid = mail.checkEmail(email)
+        if not email_is_valid:
+            flash(u'请输入合法的邮箱')
+            return render_template('regist.html')
         email_is_existed = User_regist.query.filter_by(email = email).first()
         code = util.makeCode()
         if not email_is_existed:
-            user = User_regist(email, code)
-            db.session.add(user)
-            db.session.commit()
+            User_regist.create(email, code)
             mail.sendMail(email, code)
             return render_template('password.html', email = email)
         else:
             flash(u'此邮箱已经注册')
-    return redirect(url_for('regist')) 
+    return render_template('regist.html')
 
 @app.route('/active')
 def active():
@@ -35,11 +37,8 @@ def active():
         return render_template('password.html', email = email)
     else:
         user_regist_mail_is_existed = User_regist.query.filter_by(email = email).first()
-        local_email, local_code = user_regist_mail_is_existed.email, user_regist_mail_is_existed.code
-        if email == local_email and code == local_code:
-            set_status = User.query.filter_by(email = email)
-            set_status.update({'status':'active'})
-            set_status.session.commit()
+        if user_regist_mail_is_existed.checkCode(code):
+            user_email_is_existed.setStatus('active')
             return redirect(url_for('login')) 
     return redirect(url_for('register')) 
         
@@ -50,11 +49,8 @@ def init_password():
         email = request.form['email'].strip()
         password = request.form['password'].strip()
         salt, real_password = util.md5Password(password)
-        user = User(email, real_password, email, salt, 'normal')
-        db.session.add(user)
-        db.session.commit()
+        user = User.create(email, real_password, email, salt)
+        session['id'] = user.id
         return redirect(url_for('login'))
-    else:
-        return render_template('password.html')
     return render_template('password.html')
 
