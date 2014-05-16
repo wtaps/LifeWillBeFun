@@ -1,4 +1,5 @@
 from Lifewillbefun import db
+from sqlalchemy import desc
 
 class Note(db.Model):
     __tablename__ = 'note'
@@ -13,6 +14,17 @@ class Note(db.Model):
         self.content = content
         self.time = time
         self.update_time = time
+    
+    @classmethod
+    def create(cls, user_id, content, time):
+        note = Note(user_id, content, time)
+        db.session.add(note)
+        db.session.commit()
+        return note
+
+    @classmethod
+    def all(cls):
+        return Note.query.order_by(desc(Note.time)).all()
 
     def __repr__(self):
         return '<Content %s>' % self.content[:20]

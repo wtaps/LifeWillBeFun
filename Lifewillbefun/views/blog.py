@@ -4,10 +4,14 @@ from Lifewillbefun import app, db
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
 from Lifewillbefun.models.user import User, User_regist
 from Lifewillbefun.models.note import Note
+import datetime
 
 @app.route('/note-list', methods=['GET', 'POST'])
 def note_list():
-    return render_template('note_list.html')
+    notes = Note.all()
+    if not notes:
+        return render_template('no_note.html')
+    return render_template('note_list.html', notes = notes)
 
 @app.route('/write', methods=['GET', 'POST'])
 def note_write():
@@ -15,17 +19,19 @@ def note_write():
         return redirect(url_for('login'))
     if request.method == 'POST':
         user_id = session['id']
-        time = request.form['note_date']
+        time = datetime.datetime.now()
         content = request.form['note_content']
-        note = Note(user_id, content, time)
-        db.session.add(note)
-        db.session.commit()
+        note = Note.create(user_id, content, time)
         return redirect(url_for('note_latest'))
     return render_template('write.html')
 
 @app.route('/latest', methods=['GET', 'POST'])
 def note_latest():
-    entities = Note.query.filter_by().order_by('-id').all()
-    return str(entities)
+    notes = Note.all()
+    return render_template('note.html', notes = notes)
 
+@app.route('/notes', methods=['GET', 'POST'])
+def notes():
+    notes = Note.all()
+    return render_template('note.html', notes = notes)
 

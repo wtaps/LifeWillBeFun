@@ -29,6 +29,10 @@ class User(db.Model):
         self.status = status
         db.session.commit()
 
+    def changePassword(self, password):
+        self.password = hashlib.md5(self.salt + password).hexdigest()
+        db.session.commit()
+
     def checkPassword(self, password):
         return self.password == hashlib.md5(self.salt + password).hexdigest()
         

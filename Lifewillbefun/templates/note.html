@@ -27,13 +27,15 @@
                 <img src="../static/img/icon_ribbon.gif" />
             </div>
             <div class="article">
+                {% for note in notes %}
                 <input type='hidden' id='note_id' value='{{ note.id }}'/>
                 <h2 id='note_time'>{{ note.time}}</h2>
-                <h3 id="note_weekday">{{ note.weekday}}</h3>
+                <h3 id="note_weekday">{{ note.weekday }}</h3>
                 <div class="text" id="note_content">
                     {% autoescape off %}
                         {{ note.content }}
                     {% endautoescape %}
+                {% endfor %}
                 </div>
             </div>
         </div>
