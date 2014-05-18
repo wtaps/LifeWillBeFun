@@ -14,7 +14,7 @@
             </div>
             {% for m in date_list %}
                 <div class="item" id="date_sel_{{ m }}">
-                    <a href="/notes/{{ m }}">{{ m[:4] }}年{{ m[4:] }}月</a>
+                    <a href="/notes/{{ m }}">{{ m[:4] }}年{{ m[5:7] }}月{{ m[8:] }}日</a>
                 </div>
             {% endfor %}
         </div>

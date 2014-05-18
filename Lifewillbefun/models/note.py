@@ -23,8 +23,20 @@ class Note(db.Model):
         return note
 
     @classmethod
-    def all(cls):
-        return Note.query.order_by(desc(Note.time)).all()
+    def all(cls, user_id):
+        return Note.query.filter_by(user_id = user_id).order_by(desc(Note.time)).all()
+
+    @classmethod
+    def latest(cls, user_id):
+        return Note.query.filter_by(user_id = user_id).order_by(desc(Note.time)).first()
+
+    @classmethod
+    def datelist(cls, user_id):
+        return Note.query.filter_by(user_id = user_id).order_by(desc(Note.time)).values(Note.time)
+
+    @classmethod
+    def datenotes(cls, user_id, index):
+        return Note.query.filter(Note.user_id == user_id).filter(Note.time.like(index)).order_by(desc(Note.time)).all()
 
     def __repr__(self):
         return '<Content %s>' % self.content[:20]
