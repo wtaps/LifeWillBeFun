@@ -4,15 +4,17 @@ from Lifewillbefun import app, db
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
 from Lifewillbefun.models.user import User, User_regist
 from Lifewillbefun.models.note import Note
+from flask.ext.login import login_required, current_user
 
 
 @app.route('/setting/password', methods=['GET', 'POST'])
+@login_required
 def settings():
-    if 'id' not in session:
-        flash(u'请先登陆')
-        return redirect(url_for('login'))
+    #if 'id' not in session:
+    #    flash(u'请先登陆')
+    #    return redirect(url_for('login'))
     if request.method == 'POST':
-        user = User.query_by_id(session['id'])
+        user = User.query_by_id(current_user.id)
         old = request.form['old'].strip()
         new = request.form['new'].strip()
         confirm = request.form['confirm'].strip()

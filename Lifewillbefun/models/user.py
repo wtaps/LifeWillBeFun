@@ -19,7 +19,7 @@ class User(db.Model):
         self.status = status
 
     @classmethod
-    def create(cls, username, password, email, salt, status = 'normal'):
+    def create(cls, username, password, email, salt, status):
         user = User(username, password, email, salt, status)
         db.session.add(user)
         db.session.commit()
@@ -33,7 +33,7 @@ class User(db.Model):
     def query_by_id(cls, id):
         return User.query.filter_by(id = id).first()
 
-    def setStatus(self, status = 'active'):
+    def setStatus(self, status):
         self.status = status
         db.session.commit()
 
@@ -43,6 +43,18 @@ class User(db.Model):
 
     def checkPassword(self, password):
         return self.password == hashlib.md5(self.salt + password).hexdigest()
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
         
     def __repr__(self):
         return '<User %r>' % self.username

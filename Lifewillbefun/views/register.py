@@ -3,6 +3,7 @@
 from Lifewillbefun import app, db
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
 from Lifewillbefun.utils import mail, util
+from Lifewillbefun.utils.consts import USER_STATUS_INVALID, USER_STATUS_NORMAL, USER_STATUS_SUICIDE
 from Lifewillbefun.models.user import User, User_regist
 
 @app.route('/')
@@ -41,7 +42,7 @@ def active():
     else:
         user_regist_mail_is_existed = User_regist.query_by_email(email)
         if user_regist_mail_is_existed.checkCode(code):
-            user_email_is_existed.setStatus('active')
+            user_email_is_existed.setStatus(USER_STATUS_NORMAL)
             return redirect(url_for('login')) 
     return redirect(url_for('register')) 
         
@@ -52,8 +53,7 @@ def init_password():
         email = request.form['email'].strip()
         password = request.form['password'].strip()
         salt, real_password = util.md5Password(password)
-        user = User.create(email, real_password, email, salt)
-        session['id'] = user.id
+        user = User.create(email, real_password, email, salt, USER_STATUS_INVALID)
         return redirect(url_for('login'))
     return render_template('password.html')
 

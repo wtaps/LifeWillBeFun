@@ -39,5 +39,13 @@ class Note(db.Model):
     def datenotes(cls, user_id, index):
         return Note.query.filter(Note.user_id == user_id).filter(Note.time.like(index)).order_by(desc(Note.time)).all()
 
+    @classmethod
+    def get_newer_note(cls, user_id, note_id):
+        return Note.query.filter(Note.user_id == user_id).filter(Note.id > note_id).first()
+
+    @classmethod
+    def get_older_note(cls, user_id, note_id):
+        return Note.query.filter(Note.user_id == user_id).filter(Note.id < note_id).order_by(desc(Note.id)).first()
+
     def __repr__(self):
         return '<Content %s>' % self.content[:20]

@@ -2,10 +2,11 @@
 
 import random, hashlib
 from flask import Flask, session
+from flask.ext.login import current_user
 
 def get_user_id():
-    if 'id' in session:
-        return session['id']
+    if hasattr(current_user, 'id'):
+        return current_user.id
     return 0
 
 def makeCode():
@@ -27,8 +28,8 @@ def get_local_weekday(time):
                    3:'四',   
                    4:'五',   
                    5:'六',   
-                   6:'七',   
-            }
+                   6:'日',   
+                }
     return u'星期%s' % weekday_dict[time.weekday()].decode('utf8')
 
 

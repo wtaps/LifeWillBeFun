@@ -2,20 +2,14 @@
 
 from Lifewillbefun import app
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
-from flask.ext.login import login_required
 from Lifewillbefun.models.user import User, User_regist
 from Lifewillbefun.utils.mail import checkEmail
 from Lifewillbefun import login_manager
-
-@login_manager.user_loader
-def load_user(userid):
-        return User.query.get(userid)
+from flask.ext.login import login_user, logout_user, login_required
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        if 'id' in session:
-            return redirect(url_for('note_list'))
         return render_template('login.html')
     elif request.method == 'POST':
         email = request.form['email'].strip()
@@ -29,15 +23,14 @@ def login():
             flash(u'用户未注册')
             return redirect(url_for('register'))
         if email_is_existed.checkPassword(password):
-            session['id'] = email_is_existed.id
-            return redirect(url_for('note_list'))
+            flash(u'登录成功')
+            login_user(email_is_existed)
+            return redirect(request.args.get('next') or url_for('note_list'))
         flash(u'邮箱密码不正确')
     return render_template('login.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    if 'id' not in session:
-        return redirect(url_for('login'))
-    session.pop('id', None)
+    logout_user()
     return redirect(url_for('login'))
 
