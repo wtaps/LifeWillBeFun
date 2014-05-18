@@ -25,6 +25,14 @@ class User(db.Model):
         db.session.commit()
         return user
 
+    @classmethod
+    def query_by_email(cls, email):
+        return User.query.filter_by(email = email).first()
+
+    @classmethod
+    def query_by_id(cls, id):
+        return User.query.filter_by(id = id).first()
+
     def setStatus(self, status = 'active'):
         self.status = status
         db.session.commit()
@@ -57,6 +65,10 @@ class User_regist(db.Model):
         db.session.add(user)
         db.session.commit()
         return user
+
+    @classmethod
+    def query_by_email(cls, email):
+        return User_regist.query.filter_by(email = email).first()
 
     def checkCode(self, code):
         return self.code == code

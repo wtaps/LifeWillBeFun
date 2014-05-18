@@ -12,7 +12,7 @@ def settings():
         flash(u'请先登陆')
         return redirect(url_for('login'))
     if request.method == 'POST':
-        user = User.query.filter_by(id = session['id']).first()
+        user = User.query_by_id(session['id'])
         old = request.form['old'].strip()
         new = request.form['new'].strip()
         confirm = request.form['confirm'].strip()

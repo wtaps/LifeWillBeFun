@@ -32,7 +32,8 @@ class Note(db.Model):
 
     @classmethod
     def datelist(cls, user_id):
-        return Note.query.filter_by(user_id = user_id).order_by(desc(Note.time)).values(Note.time)
+        datelist = Note.query.filter_by(user_id = user_id).order_by(desc(Note.time)).values(Note.time)
+        return set(map(lambda x: x.time.strftime('%Y-%m-%d'), datelist))
 
     @classmethod
     def datenotes(cls, user_id, index):

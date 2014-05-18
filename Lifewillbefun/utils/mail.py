@@ -23,8 +23,10 @@ def sendMail(mailto, code):
         s.login(MAIL_USER, MAIL_PASS)
         s.sendmail(me, mailto, msg.as_string())
         s.quit()
+        return True
     except Exception, e:
         print str(e)
+        return False
 
 def checkEmail(email):
     return re.match(r'(^[0-9a-z][_.0-9a-z-]{0,31})@([0-9a-z][0-9a-z-]{0,30}[0-9a-z]\.){1,4}[a-z]{2,4}$', email)

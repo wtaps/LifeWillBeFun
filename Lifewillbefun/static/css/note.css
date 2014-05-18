@@ -34,13 +34,13 @@
     height:39px;
     display:block;
 }
-.subnav_top .menu ul li a.newer{
+.subnav_top .menu ul li a.older{
     background-position:0 0;
 }
 .subnav_top .menu ul li a.random{
     background-position:-127px 0;
 }
-.subnav_top .menu ul li a.older{
+.subnav_top .menu ul li a.newer{
     background-position:-254px 0;
 }
 .ribbon{

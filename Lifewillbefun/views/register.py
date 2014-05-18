@@ -17,12 +17,15 @@ def register():
         if not email_is_valid:
             flash(u'请输入合法的邮箱')
             return render_template('regist.html')
-        email_is_existed = User_regist.query.filter_by(email = email).first()
+        email_is_existed = User_regist.query_by_email(email)
         code = util.makeCode()
         if not email_is_existed:
             User_regist.create(email, code)
-            mail.sendMail(email, code)
-            return render_template('password.html', email = email)
+            result = mail.sendMail(email, code)
+            if result:
+                return render_template('password.html', email = email)
+            else:
+                flash(u'注册失败，请重新注册')
         else:
             flash(u'此邮箱已经注册')
     return render_template('regist.html')
@@ -31,12 +34,12 @@ def register():
 def active():
     email = request.args.get('email')
     code = request.args.get('code')
-    user_email_is_existed = User.query.filter_by(email = email).first()
+    user_email_is_existed = User.query_by_email(email)
     if not user_email_is_existed:
         flash(u'此邮箱还未设置密码，请设置密码')
         return render_template('password.html', email = email)
     else:
-        user_regist_mail_is_existed = User_regist.query.filter_by(email = email).first()
+        user_regist_mail_is_existed = User_regist.query_by_email(email)
         if user_regist_mail_is_existed.checkCode(code):
             user_email_is_existed.setStatus('active')
             return redirect(url_for('login')) 
