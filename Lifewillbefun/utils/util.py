@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import random, hashlib
-from flask import Flask, session
 from flask.ext.login import current_user
 
 def get_user_id():
@@ -23,12 +22,12 @@ def get_local_date(time):
 
 def get_local_weekday(time):
     weekday_dict = {0:'一', 
-                   1:'二',    
-                   2:'三',   
-                   3:'四',   
-                   4:'五',   
-                   5:'六',   
-                   6:'日',   
+                    1:'二',    
+                    2:'三',   
+                    3:'四',   
+                    4:'五',   
+                    5:'六',   
+                    6:'日',   
                 }
     return u'星期%s' % weekday_dict[time.weekday()].decode('utf8')
 
