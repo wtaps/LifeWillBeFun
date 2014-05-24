@@ -3,6 +3,7 @@
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
+from flask.ext.cache import Cache
 from Lifewillbefun.utils.util import get_user_id
 
 app = Flask('Lifewillbefun')
@@ -13,5 +14,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message = u'请先登录'
+cache = Cache(app, config = {'CACHE_TYPE':'simple'})
 
 import views

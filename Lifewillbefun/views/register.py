@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 
-from Lifewillbefun import app, db
+from Lifewillbefun import app, db, cache
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
 from Lifewillbefun.utils import mail, util
 from Lifewillbefun.utils.consts import USER_STATUS_INVALID, USER_STATUS_NORMAL, USER_STATUS_SUICIDE
 from Lifewillbefun.models.user import User, User_regist
 
 @app.route('/')
+@cache.cached(timeout = 60)
 def regist():
      return render_template('regist.html')
 
