@@ -2,10 +2,8 @@ LifeWillBeFun
 =============
 
 blog
+=============
 
-2014-04-27
-how to use flask
+**个人博客
 
-2014-05-03
-go to
 
