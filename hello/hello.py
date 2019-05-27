@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, render_template, flash, make_response, redirect, escape, session
 app = Flask(__name__)
-app.secret_key = 'SSAWKJRNXS.*&^#@SDsfd#'
+app.secret_key = ''
 
 @app.route('/hello')
 @app.route('/hello/<name>')
